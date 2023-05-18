@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Image } from "./Canvas";
 import LoadingDots from "./LoadingDots";
@@ -14,6 +14,45 @@ export default function ImageGenerator(props: {
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
 
+  async function generateImage() {
+    if (generating || !prompt) {
+      return;
+    }
+
+    setGenerating(true);
+
+    await fetch("/api/image/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+      }),
+    }).then((res) =>
+      res.json().then((data) => {
+        setImages([data, ...images]);
+      })
+    );
+
+    setPrompt("");
+    setGenerating(false);
+  }
+
+  useEffect(() => {
+    const handleEnter = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        generateImage();
+      }
+    };
+
+    window.addEventListener("keydown", handleEnter);
+
+    return () => {
+      window.removeEventListener("keydown", handleEnter);
+    };
+  }, [prompt]);
+
   return (
     <div className="flex flex-col w-full gap-8 bg-fuchsia-300 bg-opacity-5 py-14 shadow transition-all">
       <input
@@ -26,30 +65,7 @@ export default function ImageGenerator(props: {
       <button
         className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-16 h-12 text-sm font-medium w-fit self-center cursor-pointer"
         disabled={generating || !prompt}
-        onClick={async () => {
-          if (generating || !prompt) {
-            return;
-          }
-
-          setGenerating(true);
-
-          await fetch("/api/image/new", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              prompt: prompt,
-            }),
-          }).then((res) =>
-            res.json().then((data) => {
-              setImages([data, ...images]);
-            })
-          );
-
-          setPrompt("");
-          setGenerating(false);
-        }}
+        onClick={generateImage}
       >
         <div className="flex flex-row gap-2 content-center justify-center">
           {generating ? (
