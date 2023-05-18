@@ -14,14 +14,14 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-6 justify-center">
+      <ImageGenerator images={images} setImages={setImages} />
+
       <Bulbs
         bulbs={bulbs}
         setBulbs={setBulbs}
         selectedBulbs={selectedBulbs}
         setSelectedBulbs={setSelectedBulbs}
       />
-
-      <ImageGenerator images={images} setImages={setImages} />
 
       <Canvas
         images={images}
