@@ -1,7 +1,7 @@
 import './globals.css'
-import { Righteous } from "next/font/google";
+import { Space_Mono } from "next/font/google";
 
-const googleFont = Righteous({ weight: "400", subsets: ["latin"] });
+const googleFont = Space_Mono({ weight: "400", subsets: ["latin"] });
 
 export const metadata = {
   title: "Hue GPT",

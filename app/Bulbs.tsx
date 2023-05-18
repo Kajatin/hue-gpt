@@ -129,7 +129,7 @@ export default function Bulbs(props: {
                 {bulb.icon}
               </div>
 
-              <div className="whitespace-nowrap">
+              <div className="whitespace-nowrap text-sm">
                 {bulb.name.toLocaleLowerCase()}
               </div>
             </div>

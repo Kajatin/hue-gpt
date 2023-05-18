@@ -117,7 +117,7 @@ export default function Canvas(props: {
                   animate={{ height: "auto", scale: 1 }}
                   exit={{ height: 0, scale: 0.9 }}
                   transition={{ duration: 0.2 }}
-                  className="px-3"
+                  className="px-3 mt-1"
                 >
                   <button
                     className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-10 h-10 text-sm font-medium w-full self-center cursor-pointer"
