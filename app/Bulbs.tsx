@@ -58,7 +58,7 @@ export default function Bulbs(props: {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 px-3 md:px-10 py-3 mt-1">
+    <div className="flex flex-col gap-6 px-3 md:px-10 pt-3 pb-4 mt-1 sticky top-0 z-10 bg-[#202124] bg-opacity-80 backdrop-blur">
       <div className="flex flex-row gap-3 px-2 h-fit overflow-x-scroll no-scrollbar">
         {bulbs.map((bulb: Bulb) => {
           const isBgLight = bulb.on ? isLight(hexToRgb(bulb.color)) : false;

@@ -122,7 +122,10 @@ export default function Canvas(props: {
                   <button
                     className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-10 h-10 text-sm font-medium w-full self-center cursor-pointer"
                     disabled={!selectedBulbs}
-                    onClick={async () => {
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+
                       if (!selectedBulbs || !selectedImage) {
                         return;
                       }
@@ -199,7 +202,7 @@ export default function Canvas(props: {
                   animate={{ height: "auto", scale: 1 }}
                   exit={{ height: 0, scale: 0.9 }}
                   transition={{ duration: 0.2 }}
-                  className="px-3 opacity-50 hover:opacity-100 mt-1"
+                  className="px-3 opacity-50 hover:opacity-100"
                   onClick={async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
