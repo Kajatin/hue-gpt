@@ -15,7 +15,7 @@ export type Bulb = {
 
 export default function Bulbs(props: {
   bulbs: Bulb[];
-  setBulbs: (bulbs: Bulb[]) => void;
+  setBulbs: (bulbs: (prevBulbs: Bulb[]) => Bulb[]) => void;
   selectedBulbs: Bulb[];
   setSelectedBulbs: (bulbs: Bulb[]) => void;
 }) {
@@ -57,8 +57,40 @@ export default function Bulbs(props: {
     getBulbs();
   }, []);
 
+  async function turnLightsOnOff(on: boolean) {
+    await Promise.all(
+      selectedBulbs.map(async (bulb) => {
+        await fetch(`/api/light/${bulb.id}/on`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ on }),
+        });
+      })
+    );
+
+    const bulbs = selectedBulbs.map((bulb) => {
+      return {
+        ...bulb,
+        on,
+      };
+    });
+
+    setSelectedBulbs([]);
+
+    setBulbs((prevBulbs: Bulb[]) => {
+      const newBulbs = [...prevBulbs];
+      bulbs.forEach((bulb) => {
+        const bulbIndex = newBulbs.findIndex((b) => b.id === bulb.id);
+        newBulbs[bulbIndex] = bulb;
+      });
+      return newBulbs;
+    });
+  }
+
   return (
-    <div className="flex flex-col gap-6 px-3 md:px-10 pt-3 pb-4 mt-1 sticky top-0 z-10 bg-[#202124] bg-opacity-80 backdrop-blur">
+    <div className="flex flex-col gap-3 px-3 md:px-10 pt-3 pb-4 mt-1 sticky top-0 z-10 bg-[#202124] bg-opacity-80 backdrop-blur">
       <div className="flex flex-row gap-3 px-2 h-fit overflow-x-scroll no-scrollbar">
         {bulbs.map((bulb: Bulb) => {
           const isBgLight = bulb.on ? isLight(hexToRgb(bulb.color)) : false;
@@ -135,6 +167,22 @@ export default function Bulbs(props: {
             </div>
           );
         })}
+      </div>
+
+      <div className="flex flex-row gap-2 self-end">
+        <button
+          className="hover:underline"
+          onClick={() => setSelectedBulbs([])}
+        >
+          Clear all
+        </button>
+        <div className="w-0.5 bg-white rounded-full opacity-50"></div>
+        <button
+          className="hover:underline"
+          onClick={() => turnLightsOnOff(false)}
+        >
+          Turn off
+        </button>
       </div>
     </div>
   );
