@@ -31,7 +31,7 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 - [x] Implement image processing to extract dominant colors
 - [x] Implement light controls
 - [x] Image deletion API
-- [ ] Brightness adjustment
+- [x] Brightness adjustment
 - [ ] Secure Firebase access
 - [ ] Deploy
 - [ ] Shuffle colors between lights

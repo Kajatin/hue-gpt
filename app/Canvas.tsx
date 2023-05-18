@@ -71,6 +71,7 @@ export default function Canvas(props: {
     setBulbs,
   } = props;
 
+  const [brightness, setBrightness] = useState(75);
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
@@ -105,22 +106,25 @@ export default function Canvas(props: {
           >
             <div
               className={
-                "my-masonry-grid_item flex flex-col bg-zinc-700 bg-opacity-40 gap-3 pb-2 shadow-md rounded-2xl overflow-hidden cursor-pointer hover:shadow-lg " +
+                "my-masonry-grid_item flex flex-col bg-zinc-700 bg-opacity-40 gap-3 pb-2 shadow-md rounded-2xl overflow-hidden hover:shadow-lg " +
                 (selectedImage
                   ? selectedImage?.id === image.id
                     ? "scale-105"
                     : "opacity-60 scale-95"
                   : "opacity-95 hover:opacity-100")
               }
-              onClick={() => {
-                if (selectedImage?.id === image.id) {
-                  setSelectedImage(null);
-                } else {
-                  setSelectedImage(image);
-                }
-              }}
             >
-              <img className="rounded-xl" src={image.url} />
+              <img
+                className="rounded-xl cursor-pointer"
+                src={image.url}
+                onClick={() => {
+                  if (selectedImage?.id === image.id) {
+                    setSelectedImage(null);
+                  } else {
+                    setSelectedImage(image);
+                  }
+                }}
+              />
 
               <div className="px-3">
                 <DominantColors image={image} setImages={setImages} />
@@ -131,6 +135,22 @@ export default function Canvas(props: {
               </div>
 
               <div className="px-3">{image.prompt}</div>
+
+              {selectedImage?.id === image.id && (
+                <div className="px-3 flex flex-col gap-[0.4rem] mb-1">
+                  <span className="text-xs opacity-60 self-end">
+                    {brightness}%
+                  </span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={brightness}
+                    onChange={(e) => setBrightness(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+              )}
 
               {selectedImage?.id === image.id && (
                 <motion.div
@@ -174,7 +194,7 @@ export default function Canvas(props: {
                             "Content-Type": "application/json",
                           },
                           body: JSON.stringify({
-                            brightness: 100,
+                            brightness: brightness,
                             x: cie[0],
                             y: cie[1],
                           }),
@@ -223,7 +243,7 @@ export default function Canvas(props: {
                   animate={{ height: "auto", scale: 1 }}
                   exit={{ height: 0, scale: 0.9 }}
                   transition={{ duration: 0.2 }}
-                  className="px-3 opacity-50 hover:opacity-100"
+                  className="px-3 opacity-50 hover:opacity-100 mb-1"
                   onClick={async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
