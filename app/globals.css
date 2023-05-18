@@ -49,3 +49,11 @@ body {
 .my-masonry-grid_item:hover {
   transform: scale(1.05);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}

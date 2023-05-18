@@ -32,10 +32,10 @@ const DominantColors = (props: { colors: string[] }) => {
 export default function Canvas(props: {
   images: Image[];
   setImages: (images: Image[]) => void;
-  selected: Image | null;
-  setSelected: (image: Image | null) => void;
+  selectedImage: Image | null;
+  setSelectedImage: (image: Image | null) => void;
 }) {
-  const { images, setImages, selected, setSelected } = props;
+  const { images, setImages, selectedImage, setSelectedImage } = props;
 
   useEffect(() => {
     const getImages = async () => {
@@ -57,7 +57,7 @@ export default function Canvas(props: {
           1100: 3,
           700: 2,
         }}
-        className="my-masonry-grid"
+        className="my-masonry-grid px-3 md:px-10 py-3"
         columnClassName="my-masonry-grid_column"
       >
         {images.map((image: Image) => (
@@ -71,17 +71,17 @@ export default function Canvas(props: {
             <div
               className={
                 "my-masonry-grid_item flex flex-col bg-zinc-700 bg-opacity-40 gap-3 pb-2 shadow-md rounded-2xl overflow-hidden cursor-pointer hover:shadow-lg " +
-                (selected
-                  ? selected?.id === image.id
+                (selectedImage
+                  ? selectedImage?.id === image.id
                     ? "scale-105"
                     : "opacity-60 scale-95"
                   : "opacity-95 hover:opacity-100")
               }
               onClick={() => {
-                if (selected?.id === image.id) {
-                  setSelected(null);
+                if (selectedImage?.id === image.id) {
+                  setSelectedImage(null);
                 } else {
-                  setSelected(image);
+                  setSelectedImage(image);
                 }
               }}
             >

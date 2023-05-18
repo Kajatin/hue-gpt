@@ -5,21 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { storage, db } from "../../../helpers/firebaseHandler";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-function rgbToHex(rgb: number[]): string {
-  let hex = rgb.map((color) => {
-    let hex = Math.round(color).toString(16);
-    if (hex.length < 2) {
-      hex = "0" + hex;
-    }
-    return hex;
-  });
-  return "#" + hex.join("");
-}
-
-function luminance(color: number[]): number {
-  return 0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2];
-}
+import { luminance, rgbToHex } from "@/helpers/colorConversion";
 
 async function dominantColors(
   buffer: Buffer,
