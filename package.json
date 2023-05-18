@@ -17,6 +17,7 @@
     "eslint-config-next": "13.4.2",
     "firebase": "^9.22.0",
     "framer-motion": "^10.12.12",
+    "moment": "^2.29.4",
     "next": "13.4.2",
     "node-fetch": "^3.3.1",
     "node-kmeans": "^1.1.9",

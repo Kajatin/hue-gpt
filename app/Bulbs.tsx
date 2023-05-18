@@ -87,7 +87,10 @@ export default function Bulbs(props: {
               style={{
                 backgroundColor: bulb.on ? bulb.color : "",
               }}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
                 if (selectedBulbs.includes(bulb)) {
                   setSelectedBulbs(selectedBulbs.filter((b) => b !== bulb));
                 } else {
@@ -95,9 +98,45 @@ export default function Bulbs(props: {
                 }
               }}
             >
-              <span className="material-symbols-outlined rounded w-fit p-0.5">
+              <div
+                className={
+                  "material-symbols-outlined rounded w-fit p-0.5 border border-opacity-0 hover:border-opacity-100 transition-all " +
+                  (isBgLight ? " border-[#202124]" : " border-[#e1e1e1]")
+                }
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  // turn the light on/off
+                  await fetch(`/api/light/${bulb.id}/on`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      on: !bulb.on,
+                    }),
+                  }).then((res) => {
+                    if (!res.ok) {
+                      return;
+                    }
+
+                    setBulbs(
+                      bulbs.map((b) => {
+                        if (b.id === bulb.id) {
+                          return {
+                            ...b,
+                            on: !b.on,
+                          };
+                        }
+                        return b;
+                      })
+                    );
+                  });
+                }}
+              >
                 {bulb.icon}
-              </span>
+              </div>
 
               <div className="whitespace-nowrap">
                 {bulb.name.toLocaleLowerCase()}

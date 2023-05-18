@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import Masonry from "react-masonry-css";
 import { AnimatePresence, motion } from "framer-motion";
+import moment from "moment";
 
 export type Image = {
   id: string;
@@ -41,7 +42,6 @@ export default function Canvas(props: {
     const getImages = async () => {
       await fetch("/api/image").then((res) =>
         res.json().then((data) => {
-          console.log(data);
           setImages(data);
         })
       );
@@ -89,9 +89,10 @@ export default function Canvas(props: {
               <div className="px-3">
                 <DominantColors colors={image.colors} />
               </div>
-              <div className="px-3">
-                <p>{image.prompt}</p>
+              <div className="px-3 mb-[-0.6em] opacity-60 font-light">
+                {moment(image.timestamp).format("LL")}
               </div>
+              <div className="px-3">{image.prompt}</div>
             </div>
           </motion.div>
         ))}

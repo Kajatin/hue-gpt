@@ -15,9 +15,9 @@ export default function ImageGenerator(props: {
   const [generating, setGenerating] = useState(false);
 
   return (
-    <div className="flex flex-col w-full gap-8 bg-fuchsia-300 bg-opacity-5 py-10 transition-all">
+    <div className="flex flex-col w-full gap-8 bg-fuchsia-300 bg-opacity-5 py-14 transition-all">
       <input
-        className="mx-20 mt-2 rounded-full text-center p-4 text-xs sm:text-sm md:text-xl bg-zinc-700 bg-opacity-40 focus:bg-opacity-60 font-medium shadow-md outline-none"
+        className="mx-20 mt-2 rounded-full text-center p-4 text-xs sm:text-sm md:text-xl bg-zinc-700 bg-opacity-40 focus:bg-opacity-60 font-medium shadow-md outline-none scale-95 hover:scale-100 focus:scale-100 transition-all "
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder="Sunset over the ocean, watercolor painting"

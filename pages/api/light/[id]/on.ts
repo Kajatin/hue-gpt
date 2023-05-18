@@ -10,32 +10,35 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "GET") {
+  const { id } = req.query;
+  const { on } = req.body;
+
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+  if (!id || on === undefined) {
+    return res.status(400).json({ error: "Missing required parameter(s)" });
   }
 
   try {
     const response = await fetch(
-      `${process.env.HUE_BASE_URL}/clip/v2/resource/light`,
+      `${process.env.HUE_BASE_URL}/clip/v2/resource/light/${id}`,
       {
-        method: "GET",
+        method: "PUT",
         headers: {
           "hue-application-key": process.env.HUE_APP_KEY!,
         },
+        body: JSON.stringify({
+          on: {
+            on: on,
+          },
+        }),
         agent: httpsAgent,
       }
     );
 
-    const data: any = await response.json();
-    data.data.sort((a: any, b: any) => {
-      if (a.metadata.name < b.metadata.name) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-
-    res.status(200).json(data.data);
+    const data = await response.json();
+    res.status(200).json(data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
