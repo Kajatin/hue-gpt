@@ -47,6 +47,7 @@ export default function ImageGenerator(props: {
             })
           );
 
+          setPrompt("");
           setGenerating(false);
         }}
       >

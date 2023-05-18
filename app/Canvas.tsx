@@ -86,13 +86,49 @@ export default function Canvas(props: {
               }}
             >
               <img className="rounded-xl" src={image.url} />
+
               <div className="px-3">
                 <DominantColors colors={image.colors} />
               </div>
+
               <div className="px-3 mb-[-0.6em] opacity-60 font-light">
                 {moment(image.timestamp).format("LL")}
               </div>
+
               <div className="px-3">{image.prompt}</div>
+
+              {selectedImage?.id === image.id && (
+                <motion.button
+                  initial={{ height: 0 }}
+                  animate={{ height: "auto" }}
+                  exit={{ height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="px-3 opacity-50 hover:opacity-100 mt-1"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (
+                      !confirm(
+                        "Are you sure you want to delete this image? This action cannot be undone."
+                      )
+                    ) {
+                      return;
+                    }
+
+                    await fetch(`/api/image/${image.id}`, {
+                      method: "DELETE",
+                    }).then((res) => {
+                      if (res.ok) {
+                        setSelectedImage(null);
+                        setImages(images.filter((i) => i.id !== image.id));
+                      }
+                    });
+                  }}
+                >
+                  Delete
+                </motion.button>
+              )}
             </div>
           </motion.div>
         ))}
