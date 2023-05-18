@@ -58,17 +58,23 @@ export default function Bulbs(props: {
   }, []);
 
   async function turnLightsOnOff(on: boolean) {
-    await Promise.all(
-      selectedBulbs.map(async (bulb) => {
-        await fetch(`/api/light/${bulb.id}/on`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ on }),
-        });
-      })
-    );
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    for (let index = 0; index < selectedBulbs.length; index++) {
+      const bulb = selectedBulbs[index];
+
+      await fetch(`/api/light/${bulb.id}/on`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ on }),
+      });
+
+      // Delay the next request
+      await delay(100);
+    }
 
     const bulbs = selectedBulbs.map((bulb) => {
       return {

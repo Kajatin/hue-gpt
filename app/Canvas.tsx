@@ -17,16 +17,37 @@ export type Image = {
   colors: string[];
 };
 
-const DominantColors = (props: { colors: string[] }) => {
-  const { colors } = props;
+const DominantColors = (props: {
+  image: Image;
+  setImages: (images: (prevImages: Image[]) => Image[]) => void;
+}) => {
+  const { image, setImages } = props;
+  const [colors, setColors] = useState(image.colors);
+
+  const handleColorChange =
+    (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newColors = [...colors];
+      newColors[index] = event.target.value;
+      setColors(newColors);
+      setImages((prevImages) =>
+        prevImages.map((prevImage) =>
+          prevImage.id === image.id
+            ? { ...prevImage, colors: newColors }
+            : prevImage
+        )
+      );
+    };
 
   return (
     <div className="flex flex-row gap-2">
       {colors.map((color, index) => (
-        <div
+        <input
           key={index}
-          className="rounded-lg w-8 h-6"
+          type="color"
+          value={color}
+          className="cursor-pointer rounded-lg w-8 h-6 hover:scale-105"
           style={{ backgroundColor: color }}
+          onChange={handleColorChange(index)}
         />
       ))}
     </div>
@@ -102,7 +123,7 @@ export default function Canvas(props: {
               <img className="rounded-xl" src={image.url} />
 
               <div className="px-3">
-                <DominantColors colors={image.colors} />
+                <DominantColors image={image} setImages={setImages} />
               </div>
 
               <div className="px-3 mb-[-0.6em] opacity-60 font-light">
