@@ -9,12 +9,14 @@ import ImageGenerator from "./ImageGenerator";
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [bulbs, setBulbs] = useState<Bulb[]>([]);
   const [selectedBulbs, setSelectedBulbs] = useState<Bulb[]>([]);
 
   return (
-    <main className="flex flex-col gap-8 justify-center">
+    <main className="flex flex-col gap-6 justify-center">
       <Bulbs
-        selectedImage={selectedImage}
+        bulbs={bulbs}
+        setBulbs={setBulbs}
         selectedBulbs={selectedBulbs}
         setSelectedBulbs={setSelectedBulbs}
       />
@@ -26,6 +28,8 @@ export default function Home() {
         setImages={setImages}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
+        selectedBulbs={selectedBulbs}
+        setBulbs={setBulbs}
       />
     </main>
   );

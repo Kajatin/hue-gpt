@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Masonry from "react-masonry-css";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
+import { hexToCie } from "@/helpers/colorConversion";
+import LoadingDots from "./LoadingDots";
+import { Bulb } from "./Bulbs";
 
 export type Image = {
   id: string;
@@ -35,8 +38,19 @@ export default function Canvas(props: {
   setImages: (images: Image[]) => void;
   selectedImage: Image | null;
   setSelectedImage: (image: Image | null) => void;
+  selectedBulbs: Bulb[];
+  setBulbs: (bulbs: (prevBulbs: Bulb[]) => Bulb[]) => void;
 }) {
-  const { images, setImages, selectedImage, setSelectedImage } = props;
+  const {
+    images,
+    setImages,
+    selectedImage,
+    setSelectedImage,
+    selectedBulbs,
+    setBulbs,
+  } = props;
+
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     const getImages = async () => {
@@ -98,10 +112,92 @@ export default function Canvas(props: {
               <div className="px-3">{image.prompt}</div>
 
               {selectedImage?.id === image.id && (
+                <motion.div
+                  initial={{ height: 0, scale: 0.9 }}
+                  animate={{ height: "auto", scale: 1 }}
+                  exit={{ height: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  className="px-3"
+                >
+                  <button
+                    className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-10 h-10 text-sm font-medium w-full self-center cursor-pointer"
+                    disabled={!selectedBulbs}
+                    onClick={async () => {
+                      if (!selectedBulbs || !selectedImage) {
+                        return;
+                      }
+
+                      setGenerating(true);
+
+                      const delay = (ms: number) =>
+                        new Promise((resolve) => setTimeout(resolve, ms));
+
+                      for (
+                        let index = 0;
+                        index < selectedBulbs.length;
+                        index++
+                      ) {
+                        const bulb = selectedBulbs[index];
+                        const color =
+                          selectedImage.colors[
+                            index % selectedImage.colors.length
+                          ];
+                        const cie = hexToCie(color);
+
+                        await fetch(`/api/light/${bulb.id}`, {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({
+                            brightness: 100,
+                            x: cie[0],
+                            y: cie[1],
+                          }),
+                        }).then((res) =>
+                          res.json().then(async (data) => {
+                            setBulbs((prevBulbs: Bulb[]) => {
+                              const newBulbs = [...prevBulbs];
+                              const bulbIndex = newBulbs.findIndex(
+                                (b) => b.id === bulb.id
+                              );
+                              newBulbs[bulbIndex].on = true;
+                              newBulbs[bulbIndex].color = color;
+                              return newBulbs;
+                            });
+                          })
+                        );
+
+                        // Delay the next request
+                        await delay(100);
+                      }
+
+                      setGenerating(false);
+                    }}
+                  >
+                    <div className="flex flex-row gap-1 content-center justify-center">
+                      {generating ? (
+                        <LoadingDots />
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined">
+                            format_paint
+                          </span>
+                          <span className="self-center text-lg font-medium">
+                            Paint
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </button>
+                </motion.div>
+              )}
+
+              {selectedImage?.id === image.id && (
                 <motion.button
-                  initial={{ height: 0 }}
-                  animate={{ height: "auto" }}
-                  exit={{ height: 0 }}
+                  initial={{ height: 0, scale: 0.9 }}
+                  animate={{ height: "auto", scale: 1 }}
+                  exit={{ height: 0, scale: 0.9 }}
                   transition={{ duration: 0.2 }}
                   className="px-3 opacity-50 hover:opacity-100 mt-1"
                   onClick={async (e) => {

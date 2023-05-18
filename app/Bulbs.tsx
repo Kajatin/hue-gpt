@@ -1,15 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-import { Image } from "./Canvas";
-import {
-  hexToCie,
-  hexToRgb,
-  isLight,
-  cieToHex,
-} from "@/helpers/colorConversion";
-import LoadingDots from "./LoadingDots";
+import { hexToRgb, isLight, cieToHex } from "@/helpers/colorConversion";
 
 export type Bulb = {
   id: string;
@@ -21,14 +14,12 @@ export type Bulb = {
 };
 
 export default function Bulbs(props: {
-  selectedImage: Image | null;
+  bulbs: Bulb[];
+  setBulbs: (bulbs: Bulb[]) => void;
   selectedBulbs: Bulb[];
   setSelectedBulbs: (bulbs: Bulb[]) => void;
 }) {
-  const { selectedImage, selectedBulbs, setSelectedBulbs } = props;
-
-  const [bulbs, setBulbs] = useState<Bulb[]>([]);
-  const [generating, setGenerating] = useState(false);
+  const { bulbs, setBulbs, selectedBulbs, setSelectedBulbs } = props;
 
   useEffect(() => {
     const getBulbs = async () => {
@@ -67,7 +58,7 @@ export default function Bulbs(props: {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 px-3 md:px-10 py-3">
+    <div className="flex flex-col gap-6 px-3 md:px-10 py-3 mt-1">
       <div className="flex flex-row gap-3 px-2 h-fit overflow-x-scroll no-scrollbar">
         {bulbs.map((bulb: Bulb) => {
           const isBgLight = bulb.on ? isLight(hexToRgb(bulb.color)) : false;
@@ -145,68 +136,6 @@ export default function Bulbs(props: {
           );
         })}
       </div>
-
-      <button
-        className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-16 h-12 text-sm font-medium w-fit self-center cursor-pointer"
-        disabled={!selectedBulbs}
-        onClick={async () => {
-          if (!selectedBulbs || !selectedImage) {
-            return;
-          }
-
-          setGenerating(true);
-
-          const delay = (ms: number) =>
-            new Promise((resolve) => setTimeout(resolve, ms));
-
-          for (let index = 0; index < selectedBulbs.length; index++) {
-            const bulb = selectedBulbs[index];
-            const color =
-              selectedImage.colors[index % selectedImage.colors.length];
-            const cie = hexToCie(color);
-
-            await fetch(`/api/light/${bulb.id}`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                brightness: 100,
-                x: cie[0],
-                y: cie[1],
-              }),
-            }).then((res) =>
-              res.json().then(async (data) => {
-                setBulbs((prevBulbs) => {
-                  const newBulbs = [...prevBulbs];
-                  const bulbIndex = newBulbs.findIndex((b) => b.id === bulb.id);
-                  newBulbs[bulbIndex].on = true;
-                  newBulbs[bulbIndex].color = color;
-                  return newBulbs;
-                });
-              })
-            );
-
-            // Delay the next request
-            await delay(100);
-          }
-
-          setGenerating(false);
-        }}
-      >
-        <div className="flex flex-row gap-2 content-center justify-center">
-          {generating ? (
-            <LoadingDots />
-          ) : (
-            <>
-              <span className="material-symbols-outlined">
-                temp_preferences_custom
-              </span>
-              <span className="self-center text-lg font-medium">Apply</span>
-            </>
-          )}
-        </div>
-      </button>
     </div>
   );
 }
