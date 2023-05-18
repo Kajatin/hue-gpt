@@ -1,34 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h2 align="center">HueGPT 💡</h2>
 
-## Getting Started
+HueGPT is a simple tool to set colorful ambient lighting for your Philips Hue lights
+using OpenAI's APIs.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Firebase
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The backend is powered by [Firebase](https://firebase.google.com/) which is used to store the generated images in Firebase Storage and the related metadata in Firestore. If you want to run the project yourself, you'll need to add your own Firebase project and add the credentials to `FIREBASE_CONFIG` environment variable.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### OpenAI
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Image generation is done using [DALL·E](https://openai.com/product/dall-e-2) API. The generated images are then processed to extract dominant colors. You need to set your OpenAI API key in `OPENAI_API_KEY` environment variable.
 
-## Learn More
+### Philips Hue
 
-To learn more about Next.js, take a look at the following resources:
+You also, of course, will need a Philips Hue setup with a bridge and at least one light. You should register your app with the bridge and add the credentials to the `HUE_APP_KEY` and the URL of the bridge to `HUE_BASE_URL` environment variables. You can get started with the [official guide](https://developers.meethue.com/develop/hue-api-v2/getting-started/).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## TODO
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [x] Connect to the Hue bridge
+- [x] Set up Firebase Storage and Firestore
+- [x] Connect backend to Firebase & OpenAI
+- [x] Generate images using OpenAI API
+- [x] Implement image processing to extract dominant colors
+- [x] Implement light controls
+- [x] Image deletion API
+- [ ] Brightness adjustment
+- [ ] Secure Firebase access
+- [ ] Deploy
