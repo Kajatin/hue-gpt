@@ -175,7 +175,14 @@ export default function Bulbs(props: {
         })}
       </div>
 
-      <div className="flex flex-row gap-2 self-end">
+      <div className="flex flex-row gap-2 self-end items-baseline">
+        <div>
+          {selectedBulbs.length > 0 ? (
+            <span className="text-sm opacity-60 mr-2">
+              {selectedBulbs.length} selected
+            </span>
+          ) : null}
+        </div>
         <button
           className="hover:underline"
           onClick={() => setSelectedBulbs([])}
