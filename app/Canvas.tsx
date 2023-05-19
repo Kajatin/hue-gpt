@@ -78,6 +78,50 @@ export default function Canvas(props: {
 
   const [generating, setGenerating] = useState(false);
 
+  async function Paint() {
+    if (!selectedBulbs || !selectedImage) {
+      return;
+    }
+
+    setGenerating(true);
+
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    for (let index = 0; index < selectedBulbs.length; index++) {
+      const bulb = selectedBulbs[index];
+      const color = selectedImage.colors[index % selectedImage.colors.length];
+      const cie = hexToCie(color);
+
+      await fetch(`/api/light/${bulb.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          brightness: brightness,
+          x: cie[0],
+          y: cie[1],
+        }),
+      }).then((res) =>
+        res.json().then(async (data) => {
+          setBulbs((prevBulbs: Bulb[]) => {
+            const newBulbs = [...prevBulbs];
+            const bulbIndex = newBulbs.findIndex((b) => b.id === bulb.id);
+            newBulbs[bulbIndex].on = true;
+            newBulbs[bulbIndex].color = color;
+            return newBulbs;
+          });
+        })
+      );
+
+      // Delay the next request
+      await delay(100);
+    }
+
+    setGenerating(false);
+  }
+
   useEffect(() => {
     const getImages = async () => {
       await fetch("/api/image").then((res) =>
@@ -88,6 +132,24 @@ export default function Canvas(props: {
     };
     getImages();
   }, []);
+
+  useEffect(() => {
+    Paint();
+  }, [selectedImage]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      Paint();
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [brightness]);
+
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     Paint();
+  //   }, 500);
+  //   return () => clearTimeout(timeout);
+  // }, [selectedBulbs]);
 
   return (
     <AnimatePresence>
@@ -136,91 +198,6 @@ export default function Canvas(props: {
               </div>
 
               <div className="px-3">{image.prompt}</div>
-
-              {selectedImage?.id === image.id && (
-                <motion.div
-                  initial={{ height: 0, scale: 0.9 }}
-                  animate={{ height: "auto", scale: 1 }}
-                  exit={{ height: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                  className="px-3 mt-1"
-                >
-                  <button
-                    className="border opacity-60 hover:opacity-90 transition-all rounded-xl px-10 h-10 text-sm font-medium w-full self-center cursor-pointer"
-                    disabled={!selectedBulbs}
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-
-                      if (!selectedBulbs || !selectedImage) {
-                        return;
-                      }
-
-                      setGenerating(true);
-
-                      const delay = (ms: number) =>
-                        new Promise((resolve) => setTimeout(resolve, ms));
-
-                      for (
-                        let index = 0;
-                        index < selectedBulbs.length;
-                        index++
-                      ) {
-                        const bulb = selectedBulbs[index];
-                        const color =
-                          selectedImage.colors[
-                            index % selectedImage.colors.length
-                          ];
-                        const cie = hexToCie(color);
-
-                        await fetch(`/api/light/${bulb.id}`, {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({
-                            brightness: brightness,
-                            x: cie[0],
-                            y: cie[1],
-                          }),
-                        }).then((res) =>
-                          res.json().then(async (data) => {
-                            setBulbs((prevBulbs: Bulb[]) => {
-                              const newBulbs = [...prevBulbs];
-                              const bulbIndex = newBulbs.findIndex(
-                                (b) => b.id === bulb.id
-                              );
-                              newBulbs[bulbIndex].on = true;
-                              newBulbs[bulbIndex].color = color;
-                              return newBulbs;
-                            });
-                          })
-                        );
-
-                        // Delay the next request
-                        await delay(100);
-                      }
-
-                      setGenerating(false);
-                    }}
-                  >
-                    <div className="flex flex-row gap-1 content-center justify-center">
-                      {generating ? (
-                        <LoadingDots />
-                      ) : (
-                        <>
-                          <span className="material-symbols-outlined">
-                            format_paint
-                          </span>
-                          <span className="self-center text-lg font-medium">
-                            Paint
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </button>
-                </motion.div>
-              )}
 
               {selectedImage?.id === image.id && (
                 <motion.button
