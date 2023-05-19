@@ -59,7 +59,7 @@ const DominantColors = (props: {
 
 export default function Canvas(props: {
   images: Image[];
-  setImages: (images: Image[]) => void;
+  setImages: any;
   selectedImage: Image | null;
   setSelectedImage: (image: Image | null) => void;
   selectedBulbs: Bulb[];
@@ -188,6 +188,19 @@ export default function Canvas(props: {
               }}
             >
               <img className="rounded-xl" src={image.url} />
+
+              {generating && selectedImage?.id === image.id && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="absolute top-1/3 left-1/2"
+                >
+                  <div className="transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-3 rounded-xl backdrop-blur-md bg-opacity-60">
+                    <LoadingDots />
+                  </div>
+                </motion.div>
+              )}
 
               <div
                 className="px-3 cursor-auto"
