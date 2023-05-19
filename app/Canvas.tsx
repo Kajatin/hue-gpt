@@ -172,7 +172,7 @@ export default function Canvas(props: {
           >
             <div
               className={
-                "my-masonry-grid_item flex flex-col bg-zinc-700 bg-opacity-40 gap-3 pb-2 shadow-md rounded-2xl overflow-hidden hover:shadow-lg " +
+                "my-masonry-grid_item flex flex-col bg-zinc-700 bg-opacity-40 gap-3 pb-2 shadow-md rounded-2xl cursor-pointer overflow-hidden hover:shadow-lg " +
                 (selectedImage
                   ? selectedImage?.id === image.id
                     ? "scale-105"
@@ -187,9 +187,14 @@ export default function Canvas(props: {
                 }
               }}
             >
-              <img className="rounded-xl cursor-pointer" src={image.url} />
+              <img className="rounded-xl" src={image.url} />
 
-              <div className="px-3">
+              <div
+                className="px-3 cursor-auto"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 <DominantColors image={image} setImages={setImages} />
               </div>
 
