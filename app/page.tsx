@@ -15,7 +15,11 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-6 justify-center">
-      <ImageGenerator images={images} setImages={setImages} />
+      <ImageGenerator
+        images={images}
+        setImages={setImages}
+        selectedImage={selectedImage}
+      />
 
       <Bulbs
         bulbs={bulbs}

@@ -15,7 +15,7 @@ export type Bulb = {
 
 export default function Bulbs(props: {
   bulbs: Bulb[];
-  setBulbs: (bulbs: (prevBulbs: Bulb[]) => Bulb[]) => void;
+  setBulbs: any;
   selectedBulbs: Bulb[];
   setSelectedBulbs: (bulbs: Bulb[]) => void;
   brightness: number;

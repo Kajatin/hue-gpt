@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 
 import { Image } from "./Canvas";
 import LoadingDots from "./LoadingDots";
+import { hexToRgbA } from "@/helpers/colorConversion";
 
 export default function ImageGenerator(props: {
   images: Image[];
   setImages: (images: Image[]) => void;
+  selectedImage: Image | null;
 }) {
-  const { images, setImages } = props;
+  const { images, setImages, selectedImage } = props;
 
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -54,7 +56,14 @@ export default function ImageGenerator(props: {
   }, [prompt]);
 
   return (
-    <div className="flex flex-col w-full gap-8 bg-fuchsia-300 bg-opacity-5 py-14 shadow transition-all">
+    <div
+      className="flex flex-col w-full gap-8 py-14 shadow transition-all"
+      style={{
+        background: selectedImage?.colors[2]
+          ? hexToRgbA(selectedImage?.colors[2], 0.05)
+          : hexToRgbA("#f0abfc", 0.05),
+      }}
+    >
       <input
         className="mx-3 md:mx-20 mt-2 rounded-full text-center p-4 md:text-xl bg-zinc-700 bg-opacity-40 focus:bg-opacity-60 font-medium shadow-md outline-none scale-95 hover:scale-100 focus:scale-100 transition-all "
         value={prompt}
