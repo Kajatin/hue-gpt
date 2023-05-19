@@ -26,6 +26,9 @@ const DominantColors = (props: {
 
   const handleColorChange =
     (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
       const newColors = [...colors];
       newColors[index] = event.target.value;
       setColors(newColors);
@@ -61,6 +64,7 @@ export default function Canvas(props: {
   setSelectedImage: (image: Image | null) => void;
   selectedBulbs: Bulb[];
   setBulbs: (bulbs: (prevBulbs: Bulb[]) => Bulb[]) => void;
+  brightness: number;
 }) {
   const {
     images,
@@ -69,9 +73,9 @@ export default function Canvas(props: {
     setSelectedImage,
     selectedBulbs,
     setBulbs,
+    brightness,
   } = props;
 
-  const [brightness, setBrightness] = useState(75);
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
@@ -113,18 +117,15 @@ export default function Canvas(props: {
                     : "opacity-60 scale-95"
                   : "opacity-95 hover:opacity-100")
               }
+              onClick={() => {
+                if (selectedImage?.id === image.id) {
+                  setSelectedImage(null);
+                } else {
+                  setSelectedImage(image);
+                }
+              }}
             >
-              <img
-                className="rounded-xl cursor-pointer"
-                src={image.url}
-                onClick={() => {
-                  if (selectedImage?.id === image.id) {
-                    setSelectedImage(null);
-                  } else {
-                    setSelectedImage(image);
-                  }
-                }}
-              />
+              <img className="rounded-xl cursor-pointer" src={image.url} />
 
               <div className="px-3">
                 <DominantColors image={image} setImages={setImages} />
@@ -135,22 +136,6 @@ export default function Canvas(props: {
               </div>
 
               <div className="px-3">{image.prompt}</div>
-
-              {selectedImage?.id === image.id && (
-                <div className="px-3 flex flex-col gap-[0.4rem] mb-1">
-                  <span className="text-xs opacity-60 self-end">
-                    {brightness}%
-                  </span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={brightness}
-                    onChange={(e) => setBrightness(parseInt(e.target.value))}
-                    className="w-full"
-                  />
-                </div>
-              )}
 
               {selectedImage?.id === image.id && (
                 <motion.div

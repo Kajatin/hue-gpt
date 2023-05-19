@@ -11,6 +11,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
   const [bulbs, setBulbs] = useState<Bulb[]>([]);
   const [selectedBulbs, setSelectedBulbs] = useState<Bulb[]>([]);
+  const [brightness, setBrightness] = useState(75);
 
   return (
     <main className="flex flex-col gap-6 justify-center">
@@ -21,6 +22,8 @@ export default function Home() {
         setBulbs={setBulbs}
         selectedBulbs={selectedBulbs}
         setSelectedBulbs={setSelectedBulbs}
+        brightness={brightness}
+        setBrightness={setBrightness}
       />
 
       <Canvas
@@ -30,6 +33,7 @@ export default function Home() {
         setSelectedImage={setSelectedImage}
         selectedBulbs={selectedBulbs}
         setBulbs={setBulbs}
+        brightness={brightness}
       />
     </main>
   );
