@@ -142,6 +142,13 @@ export default function Canvas(props: {
       Paint();
     }, 1000);
     return () => clearTimeout(timeout);
+  }, [selectedBulbs]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      Paint();
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, [brightness]);
 
   // useEffect(() => {

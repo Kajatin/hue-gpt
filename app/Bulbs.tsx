@@ -30,6 +30,18 @@ export default function Bulbs(props: {
     setBrightness,
   } = props;
 
+  async function shuffleSelectedBulbs() {
+    const shuffledBulbs = [...selectedBulbs];
+    for (let i = shuffledBulbs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledBulbs[i], shuffledBulbs[j]] = [
+        shuffledBulbs[j],
+        shuffledBulbs[i],
+      ];
+    }
+    setSelectedBulbs(shuffledBulbs);
+  }
+
   useEffect(() => {
     const getBulbs = async () => {
       await fetch("/api/light").then((res) =>
@@ -204,6 +216,17 @@ export default function Bulbs(props: {
             </span>
           ) : null}
         </div>
+
+        <button
+          className="hover:underline"
+          onClick={async () => {
+            await shuffleSelectedBulbs();
+          }}
+        >
+          Shuffle
+        </button>
+
+        <div className="w-0.5 h-5 bg-white rounded-full opacity-50 self-center"></div>
 
         <button
           className="hover:underline"
