@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Image } from "./Canvas";
 import LoadingDots from "./LoadingDots";
 import { hexToRgbA } from "@/helpers/colorConversion";
+import { handleNewImage } from "@/helpers/firebaseHandler";
 
 export default function ImageGenerator(props: {
   images: Image[];
@@ -32,8 +33,14 @@ export default function ImageGenerator(props: {
         prompt: prompt,
       }),
     }).then((res) =>
-      res.json().then((data) => {
-        setImages([data, ...images]);
+      res.json().then(async (response) => {
+        const { data, colors } = response;
+        const newImage = await handleNewImage(data, colors, prompt);
+        if (!newImage) {
+          return;
+        }
+
+        setImages([newImage, ...images]);
       })
     );
 

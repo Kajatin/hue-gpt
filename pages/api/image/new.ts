@@ -2,9 +2,6 @@ import sharp from "sharp";
 import kmeans from "node-kmeans";
 import openai from "../../../helpers/openaiHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { storage, db } from "../../../helpers/firebaseHandler";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { luminance, rgbToHex } from "@/helpers/colorConversion";
 
 async function dominantColors(
@@ -59,16 +56,7 @@ export default async function handler(
       return res.status(500).json({ error: "No data returned" });
     }
 
-    // Upload the image to Firebase Storage
-    const randomImageName = Math.random().toString(36).substring(7);
     const binaryImage = Buffer.from(data, "base64");
-    const imageRef = ref(storage, `images/${randomImageName}.png`);
-    const url = await uploadBytes(imageRef, binaryImage).then(
-      async (snapshot) => {
-        // Get the URL of the image
-        return await getDownloadURL(imageRef);
-      }
-    );
 
     // Get the dominant colors of the image
     const colors = await dominantColors(binaryImage, 5).then((colors) => {
@@ -78,24 +66,7 @@ export default async function handler(
       return sortedColors.map((color) => rgbToHex(color));
     });
 
-    // Add a new document in collection "images"
-    const docRef = doc(db, "images", randomImageName);
-    const entry = await setDoc(docRef, {
-      url: url,
-      prompt: prompt,
-      timestamp: Date.now(),
-      colors: colors,
-    }).then(async () => {
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() };
-      } else {
-        return null;
-      }
-    });
-
-    return res.status(200).json(entry);
+    return res.status(200).json({ data: data, colors: colors });
   } catch (error) {
     console.error(error);
   }

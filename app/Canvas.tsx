@@ -8,7 +8,7 @@ import moment from "moment";
 import { hexToCie } from "@/helpers/colorConversion";
 import LoadingDots from "./LoadingDots";
 import { Bulb } from "./Bulbs";
-import { getImages } from "@/helpers/firebaseHandler";
+import { deleteImage, getImages } from "@/helpers/firebaseHandler";
 
 export type Image = {
   id: string;
@@ -242,14 +242,11 @@ export default function Canvas(props: {
                         return;
                       }
 
-                      await fetch(`/api/image/${image.id}`, {
-                        method: "DELETE",
-                      }).then((res) => {
-                        if (res.ok) {
-                          setSelectedImage(null);
-                          setImages(images.filter((i) => i.id !== image.id));
-                        }
-                      });
+                      const deleted = await deleteImage(image.id);
+                      if (deleted) {
+                        setSelectedImage(null);
+                        setImages(images.filter((i) => i.id !== image.id));
+                      }
                     }}
                   >
                     Delete
