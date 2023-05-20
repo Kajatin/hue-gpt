@@ -34,6 +34,7 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 - [x] Brightness adjustment
 - [x] Secure Firebase access
 - [ ] Deploy
+- [ ] Make `npm run build` work 🫢
 - [x] Shuffle colors between lights
 - [x] Modifiable color palette
 - [x] Enter should trigger `Generate` button
