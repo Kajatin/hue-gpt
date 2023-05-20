@@ -32,7 +32,7 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 - [x] Implement light controls
 - [x] Image deletion API
 - [x] Brightness adjustment
-- [ ] Secure Firebase access
+- [x] Secure Firebase access
 - [ ] Deploy
 - [x] Shuffle colors between lights
 - [x] Modifiable color palette
