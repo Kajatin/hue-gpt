@@ -1,4 +1,4 @@
-<h2 align="center">HueGPT 💡</h2>
+<h1 align="center">HueGPT 💡</h1>
 
 HueGPT is a simple tool to set colorful ambient lighting for your Philips Hue lights using OpenAI's APIs.
 
@@ -10,7 +10,7 @@ HueGPT is a simple tool to set colorful ambient lighting for your Philips Hue li
 
 ### Firebase
 
-The backend is powered by [Firebase](https://firebase.google.com/) which is used to store the generated images in Firebase Storage and the related metadata in Firestore. If you want to run the project yourself, you'll need to add your own Firebase project and add the credentials to `FIREBASE_CONFIG` environment variable.
+The backend is powered by [Firebase](https://firebase.google.com/) which is used to store the generated images in Firebase Storage and the related metadata in Firestore. If you want to run the project yourself, you'll need to add your own Firebase project and add the credentials to `NEXT_PUBLIC_FIREBASE_CONFIG` environment variable.
 
 ### OpenAI
 

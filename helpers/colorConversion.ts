@@ -127,4 +127,3 @@ export function hexToRgbA(hex: string, alpha: number): string {
   }
   throw new Error("Bad Hex");
 }
-
