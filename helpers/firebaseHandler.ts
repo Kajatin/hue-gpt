@@ -16,7 +16,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { Image } from "@app/Canvas";
+import { Image } from "../app/Canvas";
 
 function createFirebaseApp() {
   try {
