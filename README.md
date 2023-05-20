@@ -38,6 +38,7 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 - [x] Shuffle colors between lights
 - [x] Modifiable color palette
 - [x] Enter should trigger `Generate` button
+- [ ] Add proper Hue connection and API key generation
 
 ## Screenshots
 
