@@ -3,7 +3,7 @@
 HueGPT is a simple tool to set colorful ambient lighting for your Philips Hue lights using OpenAI's APIs.
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/e119ded3-6ab4-4d5b-9b8f-23a504705f73">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/204c0419-0baf-4d85-b9c8-dafdffa7f5d1">
 </p>
 
 ## Stack
@@ -42,9 +42,13 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 ## Screenshots
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/6bbfe985-e5ac-4375-a2b0-cb1ba73f9b9e">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/36056e72-dae0-4bd6-b635-26bd1be23361">
 </p>
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/8d787553-33a6-42bf-b9d1-81ad73460598">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/193cf494-ce5c-439e-b320-3eb668d14462">
+</p>
+
+<p align="center">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/448c2102-cbd9-4dea-9b6d-6d1373a85bb6">
 </p>
