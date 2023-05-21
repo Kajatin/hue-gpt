@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/helpers/firebaseHandler";
 
 import Bulbs, { Bulb } from "./Bulbs";
@@ -15,7 +15,6 @@ export default function Home() {
   const [bulbs, setBulbs] = useState<Bulb[]>([]);
   const [selectedBulbs, setSelectedBulbs] = useState<Bulb[]>([]);
   const [brightness, setBrightness] = useState(75);
-
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -38,6 +37,16 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-6 justify-center">
+      <div className="absolute top-0 right-0 p-2 opacity-30 hover:opacity-60 transition-all">
+        <button
+          onClick={async () => {
+            await signOut(auth);
+          }}
+        >
+          <span className="material-symbols-outlined">logout</span>
+        </button>
+      </div>
+
       <ImageGenerator
         images={images}
         setImages={setImages}

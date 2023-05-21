@@ -46,7 +46,7 @@ The project is containerized using Docker. You can build and run the project usi
 - [x] Modifiable color palette
 - [x] Enter should trigger `Generate` button
 - [ ] Add proper Hue connection and API key generation
-- [ ] Logout button
+- [x] Logout button
 
 ## Screenshots
 
