@@ -196,53 +196,57 @@ export default function Bulbs(props: {
         })}
       </div>
 
-      <div className="flex flex-row gap-2 self-end items-baseline">
-        <div className="flex flex-row gap-[0.4rem] items-center place-self-center mr-3 mt-[0.2rem]">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={brightness}
-            onChange={(e) => setBrightness(parseInt(e.target.value))}
-            className="w-full"
-          />
-          <span className="text-xs opacity-60 self-end">{brightness}%</span>
+      <div className="flex flex-col md:flex-row gap-2 self-end items-baseline">
+        <div className="flex flex-row gap-2 self-end items-baseline">
+          <div className="flex flex-row gap-[0.4rem] items-center place-self-center mr-3 mt-[0.2rem]">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={brightness}
+              onChange={(e) => setBrightness(parseInt(e.target.value))}
+              className="w-full"
+            />
+            <span className="text-xs opacity-60 self-end">{brightness}%</span>
+          </div>
+
+          <div>
+            {selectedBulbs.length >= 0 ? (
+              <span className="text-sm opacity-60 mr-3">
+                {selectedBulbs.length} selected
+              </span>
+            ) : null}
+          </div>
         </div>
 
-        <div>
-          {selectedBulbs.length >= 0 ? (
-            <span className="text-sm opacity-60 mr-3">
-              {selectedBulbs.length} selected
-            </span>
-          ) : null}
+        <div className="flex flex-row gap-2 self-end items-baseline">
+          <button
+            className="hover:underline"
+            onClick={async () => {
+              await shuffleSelectedBulbs();
+            }}
+          >
+            Shuffle
+          </button>
+
+          <div className="w-0.5 h-5 bg-white rounded-full opacity-50 self-center"></div>
+
+          <button
+            className="hover:underline"
+            onClick={() => setSelectedBulbs([])}
+          >
+            Clear all
+          </button>
+
+          <div className="w-0.5 h-5 bg-white rounded-full opacity-50 self-center"></div>
+
+          <button
+            className="hover:underline"
+            onClick={() => turnLightsOnOff(false)}
+          >
+            Turn off
+          </button>
         </div>
-
-        <button
-          className="hover:underline"
-          onClick={async () => {
-            await shuffleSelectedBulbs();
-          }}
-        >
-          Shuffle
-        </button>
-
-        <div className="w-0.5 h-5 bg-white rounded-full opacity-50 self-center"></div>
-
-        <button
-          className="hover:underline"
-          onClick={() => setSelectedBulbs([])}
-        >
-          Clear all
-        </button>
-
-        <div className="w-0.5 h-5 bg-white rounded-full opacity-50 self-center"></div>
-
-        <button
-          className="hover:underline"
-          onClick={() => turnLightsOnOff(false)}
-        >
-          Turn off
-        </button>
       </div>
     </div>
   );
