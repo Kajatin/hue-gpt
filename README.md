@@ -20,6 +20,13 @@ Image generation is done using [DALL·E](https://openai.com/product/dall-e-2) AP
 
 You also, of course, will need a Philips Hue setup with a bridge and at least one light. You should register your app with the bridge and add the credentials to the `HUE_APP_KEY` and the URL of the bridge to `HUE_BASE_URL` environment variables. You can get started with the [official guide](https://developers.meethue.com/develop/hue-api-v2/getting-started/).
 
+### Docker
+
+The project is containerized using Docker. You can build and run the project using the following commands:
+
+`sudo docker build -t hue-gpt .`
+`sudo docker run -p 3000:3000 --env-file .env.local hue-gpt`
+
 ---
 
 ## TODO
@@ -33,12 +40,13 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 - [x] Image deletion API
 - [x] Brightness adjustment
 - [x] Secure Firebase access
-- [ ] Deploy
+- [x] Deploy
 - [x] Make `npm run build` work 🫢
 - [x] Shuffle colors between lights
 - [x] Modifiable color palette
 - [x] Enter should trigger `Generate` button
 - [ ] Add proper Hue connection and API key generation
+- [ ] Logout button
 
 ## Screenshots
 
