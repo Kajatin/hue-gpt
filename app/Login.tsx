@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -50,7 +51,16 @@ export default function Login() {
 
   return (
     <div className="flex flex-col gap-6 justify-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-      <h1 className="text-2xl text-center font-bold">HueGPT 💡</h1>
+      <div className="flex flex-row gap-1">
+        <h1 className="text-2xl text-center font-bold">HueGPT</h1>
+        <Image
+          src="/light-bulb.png"
+          width={40}
+          height={40}
+          alt={""}
+          className="-mt-2"
+        />
+      </div>
       <div className="flex flex-col gap-3">
         <AnimatePresence>
           {authError && (
