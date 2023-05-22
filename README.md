@@ -1,9 +1,9 @@
-<h1 align="center">HueGPT 💡</h1>
+<h1 align="center">HueGPT <img width="30" src="https://github.com/Kajatin/hue-gpt/assets/33018844/e0b5a000-497a-4d36-a81e-fde8ca632ec1"></h1>
 
 HueGPT is a simple tool to set colorful ambient lighting for your Philips Hue lights using OpenAI's APIs.
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/204c0419-0baf-4d85-b9c8-dafdffa7f5d1">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/1e04c565-9086-406a-9814-0780324f31b4">
 </p>
 
 ## Stack
@@ -24,10 +24,12 @@ You also, of course, will need a Philips Hue setup with a bridge and at least on
 
 The project is containerized using Docker. You can build and run the project using the following commands:
 
-`sudo docker build -t hue-gpt .`
-`sudo docker run -p 3000:3000 --env-file .env.local hue-gpt`
+* `sudo docker build -t hue-gpt .`
+* `sudo docker run -p 3000:3000 --env-file .env.local hue-gpt`
 
----
+## Environment variables
+
+Copy the `.env.example` file to `.env.local` and add you credentials as explained above.
 
 ## TODO
 
@@ -51,13 +53,13 @@ The project is containerized using Docker. You can build and run the project usi
 ## Screenshots
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/36056e72-dae0-4bd6-b635-26bd1be23361">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/78b184d5-b262-4e93-b625-3449b69b2c88">
 </p>
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/193cf494-ce5c-439e-b320-3eb668d14462">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/907e8988-9d15-4a17-985d-06f1712b9e26">
 </p>
 
 <p align="center">
-  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/448c2102-cbd9-4dea-9b6d-6d1373a85bb6">
+  <img width="800" src="https://github.com/Kajatin/hue-gpt/assets/33018844/8f816b6d-c5b2-4b94-a5f1-247984027b1c">
 </p>
