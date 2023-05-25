@@ -49,6 +49,7 @@ Copy the `.env.example` file to `.env.local` and add you credentials as explaine
 - [x] Enter should trigger `Generate` button
 - [ ] Add proper Hue connection and API key generation
 - [x] Logout button
+- [ ] Adjust brightness per light
 
 ## Screenshots
 
