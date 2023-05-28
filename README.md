@@ -50,6 +50,7 @@ Copy the `.env.example` file to `.env.local` and add you credentials as explaine
 - [ ] Add proper Hue connection and API key generation
 - [x] Logout button
 - [ ] Adjust brightness per light
+- [ ] Option to group lights for easy selection
 
 ## Screenshots
 
