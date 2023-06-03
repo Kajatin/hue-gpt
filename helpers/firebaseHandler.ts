@@ -28,8 +28,8 @@ function createFirebaseApp() {
   }
 }
 
-const app = createFirebaseApp();
 // Initialize Firebase
+const app = createFirebaseApp();
 
 // Initialize Cloud Storage and get a reference to the service
 const storage = getStorage(app);
