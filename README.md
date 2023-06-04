@@ -51,6 +51,7 @@ Copy the `.env.example` file to `.env.local` and add you credentials as explaine
 - [x] Logout button
 - [ ] Adjust brightness per light
 - [ ] Option to group lights for easy selection
+- [ ] Option to download the generated image
 
 ## Screenshots
 
