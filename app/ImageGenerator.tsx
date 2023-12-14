@@ -87,12 +87,12 @@ export default function ImageGenerator(props: {
           {generating ? (
             <LoadingDots />
           ) : (
-            <>
+            <div className="flex flex-row gap-2 items-center">
               <span className="material-symbols-outlined">
                 temp_preferences_custom
               </span>
               <span className="self-center text-lg font-medium">Generate</span>
-            </>
+            </div>
           )}
         </div>
       </button>
