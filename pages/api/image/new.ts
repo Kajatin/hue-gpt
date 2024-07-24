@@ -44,14 +44,16 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const completion = await openai.createImage({
+    const completion = await openai.images.generate({
       prompt: prompt,
+      model: "dall-e-3",
       n: 1,
-      size: "256x256",
+      size: "1024x1024",
+      style: "vivid",
       response_format: "b64_json",
     });
 
-    const data = completion.data.data[0].b64_json;
+    const data = completion.data[0].b64_json;
     if (!data) {
       return res.status(500).json({ error: "No data returned" });
     }
