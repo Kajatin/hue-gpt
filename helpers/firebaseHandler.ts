@@ -40,10 +40,10 @@ const db = getFirestore(app);
 // Initialize Authentication and get a reference to the service
 const auth = getAuth(app);
 
-export async function getImages() {
+export async function getImages(uid: string) {
   try {
     // Get all documents from "images"
-    const querySnapshot = await getDocs(collection(db, "images"));
+    const querySnapshot = await getDocs(collection(db, `users/${uid}/images`));
 
     const firebaseImages = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
@@ -62,14 +62,14 @@ export async function getImages() {
   return [];
 }
 
-export async function deleteImage(id: string) {
+export async function deleteImage(uid: string, id: string) {
   try {
     // Delete the image from Firebase Storage
-    const imageRef = ref(storage, `images/${id}.png`);
+    const imageRef = ref(storage, `users/${uid}/images/${id}.png`);
     await deleteObject(imageRef);
 
     // Delete document from collection "images"
-    const docRef = doc(db, "images", id as string);
+    const docRef = doc(db, `users/${uid}/images`, id as string);
     await deleteDoc(docRef);
 
     return true;
@@ -80,25 +80,19 @@ export async function deleteImage(id: string) {
   return false;
 }
 
-export async function handleNewImage(
-  data: string,
-  colors: string[],
-  prompt: string
-) {
+export async function handleNewImage(uid: string, data: string, colors: string[], prompt: string) {
   try {
     // Upload the image to Firebase Storage
     const randomImageName = Math.random().toString(36).substring(7);
     const binaryImage = Buffer.from(data, "base64");
-    const imageRef = ref(storage, `images/${randomImageName}.png`);
-    const url = await uploadBytes(imageRef, binaryImage).then(
-      async (snapshot) => {
-        // Get the URL of the image
-        return await getDownloadURL(imageRef);
-      }
-    );
+    const imageRef = ref(storage, `users/${uid}/images/${randomImageName}.png`);
+    const url = await uploadBytes(imageRef, binaryImage).then(async (snapshot) => {
+      // Get the URL of the image
+      return await getDownloadURL(imageRef);
+    });
 
     // Add a new document in collection "images"
-    const docRef = doc(db, "images", randomImageName);
+    const docRef = doc(db, `users/${uid}/images`, randomImageName);
     const entry = await setDoc(docRef, {
       url: url,
       prompt: prompt,

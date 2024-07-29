@@ -7,12 +7,8 @@ import LoadingDots from "./LoadingDots";
 import { hexToRgbA } from "@/helpers/colorConversion";
 import { handleNewImage } from "@/helpers/firebaseHandler";
 
-export default function ImageGenerator(props: {
-  images: Image[];
-  setImages: (images: Image[]) => void;
-  selectedImage: Image | null;
-}) {
-  const { images, setImages, selectedImage } = props;
+export default function ImageGenerator(props: { uid: string; images: Image[]; setImages: (images: Image[]) => void; selectedImage: Image | null }) {
+  const { uid, images, setImages, selectedImage } = props;
 
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -35,7 +31,7 @@ export default function ImageGenerator(props: {
     }).then((res) =>
       res.json().then(async (response) => {
         const { data, colors } = response;
-        const newImage = await handleNewImage(data, colors, prompt);
+        const newImage = await handleNewImage(uid, data, colors, prompt);
         if (!newImage) {
           return;
         }

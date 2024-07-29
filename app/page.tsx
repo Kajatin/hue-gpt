@@ -60,22 +60,12 @@ export default function Home() {
     <main className="flex flex-col gap-6 justify-center">
       <Header />
 
-      <ImageGenerator
-        images={images}
-        setImages={setImages}
-        selectedImage={selectedImage}
-      />
+      <ImageGenerator uid={user.uid} images={images} setImages={setImages} selectedImage={selectedImage} />
 
-      <Bulbs
-        bulbs={bulbs}
-        setBulbs={setBulbs}
-        selectedBulbs={selectedBulbs}
-        setSelectedBulbs={setSelectedBulbs}
-        brightness={brightness}
-        setBrightness={setBrightness}
-      />
+      <Bulbs bulbs={bulbs} setBulbs={setBulbs} selectedBulbs={selectedBulbs} setSelectedBulbs={setSelectedBulbs} brightness={brightness} setBrightness={setBrightness} />
 
       <Canvas
+        uid={user.uid}
         images={images}
         setImages={setImages}
         selectedImage={selectedImage}

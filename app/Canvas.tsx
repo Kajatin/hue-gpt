@@ -59,6 +59,7 @@ const DominantColors = (props: {
 };
 
 export default function Canvas(props: {
+  uid: string;
   images: Image[];
   setImages: any;
   selectedImage: Image | null;
@@ -67,15 +68,7 @@ export default function Canvas(props: {
   setBulbs: (bulbs: (prevBulbs: Bulb[]) => Bulb[]) => void;
   brightness: number;
 }) {
-  const {
-    images,
-    setImages,
-    selectedImage,
-    setSelectedImage,
-    selectedBulbs,
-    setBulbs,
-    brightness,
-  } = props;
+  const { uid, images, setImages, selectedImage, setSelectedImage, selectedBulbs, setBulbs, brightness } = props;
 
   const [generating, setGenerating] = useState(false);
 
@@ -86,8 +79,7 @@ export default function Canvas(props: {
 
     setGenerating(true);
 
-    const delay = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     for (let index = 0; index < selectedBulbs.length; index++) {
       const bulb = selectedBulbs[index];
@@ -125,7 +117,7 @@ export default function Canvas(props: {
 
   useEffect(() => {
     const get = async () => {
-      const newImages = await getImages();
+      const newImages = await getImages(uid);
       setImages(newImages);
     };
     get();
@@ -242,7 +234,7 @@ export default function Canvas(props: {
                         return;
                       }
 
-                      const deleted = await deleteImage(image.id);
+                      const deleted = await deleteImage(uid, image.id);
                       if (deleted) {
                         setSelectedImage(null);
                         setImages(images.filter((i) => i.id !== image.id));
