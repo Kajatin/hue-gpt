@@ -18,7 +18,7 @@ Image generation is done using [DALL·E](https://openai.com/product/dall-e-2) AP
 
 ### Philips Hue
 
-You also, of course, will need a Philips Hue setup with a bridge and at least one light. You should register your app with the bridge and add the credentials to the `HUE_APP_KEY` and the URL of the bridge to `HUE_BASE_URL` environment variables. You can get started with the [official guide](https://developers.meethue.com/develop/hue-api-v2/getting-started/).
+You also, of course, will need a Philips Hue setup with a bridge and at least one light. You should register your app with the bridge and add the credentials in the app along with the URL of the bridge. You can get started with the [official guide](https://developers.meethue.com/develop/hue-api-v2/getting-started/).
 
 ### Docker
 

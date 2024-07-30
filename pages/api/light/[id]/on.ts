@@ -20,22 +20,22 @@ export default async function handler(
     return res.status(400).json({ error: "Missing required parameter(s)" });
   }
 
+  const baseUrl = req.cookies["hue-gpt.base-url"];
+  const apiKey = req.cookies["hue-gpt.api-key"];
+
   try {
-    const response = await fetch(
-      `${process.env.HUE_BASE_URL}/clip/v2/resource/light/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "hue-application-key": process.env.HUE_APP_KEY!,
+    const response = await fetch(`${baseUrl}/clip/v2/resource/light/${id}`, {
+      method: "PUT",
+      headers: {
+        "hue-application-key": apiKey!,
+      },
+      body: JSON.stringify({
+        on: {
+          on: on,
         },
-        body: JSON.stringify({
-          on: {
-            on: on,
-          },
-        }),
-        agent: httpsAgent,
-      }
-    );
+      }),
+      agent: httpsAgent,
+    });
 
     const data = await response.json();
     res.status(200).json(data);

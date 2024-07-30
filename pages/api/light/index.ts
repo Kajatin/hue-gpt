@@ -14,17 +14,17 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const baseUrl = req.cookies["hue-gpt.base-url"];
+  const apiKey = req.cookies["hue-gpt.api-key"];
+
   try {
-    const response = await fetch(
-      `${process.env.HUE_BASE_URL}/clip/v2/resource/light`,
-      {
-        method: "GET",
-        headers: {
-          "hue-application-key": process.env.HUE_APP_KEY!,
-        },
-        agent: httpsAgent,
-      }
-    );
+    const response = await fetch(`${baseUrl}/clip/v2/resource/light`, {
+      method: "GET",
+      headers: {
+        "hue-application-key": apiKey!,
+      },
+      agent: httpsAgent,
+    });
 
     const data: any = await response.json();
     data.data.sort((a: any, b: any) => {
